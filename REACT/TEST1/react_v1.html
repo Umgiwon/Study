@@ -7,6 +7,16 @@
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
     <script>
         const root = document.getElementById("root");
+        const h1 = React.createElement(
+            "h1",
+            {},
+            "createElement 사용",
+        );
+        const hr = React.createElement(
+            "hr",
+            {},
+        );
+
         const h3 = React.createElement(
             "h3", 
             {
@@ -22,7 +32,7 @@
             }, 
             "Click btn"
         );
-        const container = React.createElement("div", null, [h3, btn]);
+        const container = React.createElement("div", null, [h1, hr, h3, btn]);
         ReactDOM.render(container, root);
     </script>
 </html>

@@ -8,18 +8,24 @@
     <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel;">
         const root = document.getElementById("root");
-        const Title = () => (
-            <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>Hello, I'm title</h3>
-        );
-        const Button = () => (
-            <button style={{backgroundColor: "tomato"}} onClick={() => console.log("I'm clicked")}>Click btn</button>
-        );
-        const Container = () => (
+        let cnt = 0;
+        
+        function countUp() {
+            cnt = cnt + 1;
+            render();
+        }
+
+        function render() {
+            ReactDOM.render(<App/>, root);
+        }
+        
+        const App = () => (
             <div>
-                <Title/>
-                <Button/>
+                <h1>reRender 추가</h1>
+                <h3 >Total clicks : {cnt}</h3>
+                <button onClick={countUp}>Click btn</button>
             </div>
         );
-        ReactDOM.render(<Container/>, root);
+        render();
     </script>
 </html>
