@@ -11,12 +11,19 @@
 
         function App () {
             let [counter, setCounter] = React.useState(0);
-            const onClick =() => {
-                setCounter(counter + 1);
+            const onClick = () => {
+                //setCounter(counter + 1);
+                setCounter((current) => current + 1);
             };
             return (
                 <div>
                     <h1>reRender 추가</h1>
+                    <hr/>
+                    <p>state를 바꾸는 두가지 방법 <br/><br/>
+                        1. setCounter에 원하는 값을 넣는 방법 <br/>
+                        2. 이전 값을 계산해서 현재값을 나타내는 방법 (current를 사용)
+                    </p>
+                    <hr/>
                     <h3>Total clicks : {counter}</h3>
                     <button onClick={onClick}>Click btn</button>
                 </div>
