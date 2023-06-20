@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel;">
+
+        function MinutesToHours () {
+
+            /* state create */
+            const [amount, setAmount] = React.useState(0);
+            const [inverted, setInverted] = React.useState(false);
+
+            /* event */
+            const onChange = (event) => {
+                setAmount(event.target.value);
+            };
+
+            /* button function */
+            const reset = () => setAmount(0);
+            const onInvert = () => {
+                reset();
+                setInverted(current => !current);
+            };
+
+            return (
+                <div>
+
+                    <div>    
+                        <label htmlFor="minutes">Minutes : </label>
+                        <input value={inverted ? Math.round(amount * 60) : amount} id="minutes" placeholder="Minutes" type="number" onChange={onChange} disabled={inverted} />
+                    </div>
+
+                    <div>
+                        <label htmlFor="hours">Hours : </label>
+                        <input value={inverted ? amount : Math.round(amount / 60)} id="hours" placeholder="Hours" type="number" onChange={onChange} disabled={!inverted} />
+                    </div>
+
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onInvert}>{inverted ? "Turn back" : "Invert"}</button>
+
+                </div>
+            );
+        }
+
+        function KmToMiles() {
+
+            /** state create */
+            const [amount, setAmount] = React.useState(0);
+            const [inverted, setInverted] = React.useState(false);
+
+            /** event */
+            const onChange = (event) => {
+                setAmount(event.target.value);
+            };
+            const reset = () => setAmount(0);
+            const onInvert = () => {
+                reset();
+                setInverted(current => !current);
+            };
+
+            return (
+                <div>
+
+                    <div>
+                        <label htmlFor="km">Km : </label>
+                        <input value={inverted ? (amount * 1.609).toFixed(3) : amount} id="km" placeholder="Km" type="number" onChange={onChange} disabled={inverted} />
+                    </div>
+
+                    <div>
+                        <label htmlFor="miles">Miles : </label>
+                        <input value={inverted ? amount : (amount / 1.609).toFixed(3)} id="miles" placeholder="Miles" type="number" onChange={onChange} disabled={!inverted} />
+                    </div>
+
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onInvert}>{inverted ? "Turn back" : "Invert"}</button>
+
+                </div>
+            );
+        }
+
+        function SquareMetersToPyong() {
+
+            /** state create */
+            const [amount, setAmount] = React.useState(0);
+            const [inverted, setInverted] = React.useState(false);
+
+            /** event */
+            const onChange = (event) => {
+                setAmount(event.target.value);
+            };
+            const reset = () => setAmount(0);
+            const onInvert = () => {
+                reset();
+                setInverted(current => !current);
+            };
+
+            return (
+                <div>
+
+                    <div>
+                        <label htmlFor="squareMeters">SquareMeters : </label>
+                        <input value={inverted ? Math.round(amount * 3.3058) : amount} id="squareMeters" placeholder="SquareMeters" type="number" onChange={onChange} disabled={inverted}/>
+                    </div>
+
+                    <div>
+                        <label htmlFor="pyong">Pyong : </label>
+                        <input value={inverted ? amount : Math.round(amount / 3.3058)} id="pyong" placeholder="Pyong" type="number" onChange={onChange} disabled={!inverted}/>
+                    </div>
+
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onInvert}>{inverted ? "Turn back" : "Invert"}</button>
+
+                </div>
+            );
+        }
+
+        function App () {
+
+            /** state create */
+            const [index, setIndex] = React.useState("0");
+
+            /** event */
+            const onSelect = (event) => {
+                setIndex(event.target.value);
+            };
+
+            return (
+                <div>
+
+                    <h1 className="h1">Converter</h1>
+
+                    <select value={index} onChange={onSelect}>
+                        <option value="0">Select your units</option>
+                        <option value="1">Minutes & Hours</option>
+                        <option value="2">Km & Miles</option>
+                        <option value="3">SquareMeters & Pyong</option>
+                    </select>
+                    <hr/>
+                    {index === "0" ? "Select your units please" : null}
+                    {index === "1" ? <MinutesToHours/> : null}
+                    {index === "2" ? <KmToMiles/> : null}
+                    {index === "3" ? <SquareMetersToPyong/> : null}
+
+                </div>
+            );
+        }
+
+        const root = document.getElementById("root");
+        ReactDOM.render(<App/>, root);
+    </script>
+</html>
