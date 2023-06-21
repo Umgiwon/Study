@@ -1,47 +1,35 @@
-import { useState, useEffect } from "react";
-
-/*** component */
-/** 주로 사용하는 형태 */
-function HelloV1() {
-  useEffect(() => {
-    console.log("creacted");
-
-    /** clean up function */
-    return () => console.log("destroyed");
-  }, []);
-  return <h1>Hello</h1>;
-}
-
-/** 작게 쪼갠 형태 */
-function HelloV2() {
-
-  function byeFn() {
-    console.log("Bye :(");
-  }
-
-  const hiFn = () => {
-    console.log("Hi :)");
-
-    /** clean up function */
-    return byeFn;
-  }
-
-  useEffect(hiFn, []);
-  return <h1>Hello</h1>;
-}
+import { useEffect, useState } from "react";
 
 function App() {
   
   /** state */
-  const [showing, setShowing] = useState(false);
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]);
 
   /** event */
-  const onClick = () => setShowing(prev => !prev);
+  const fnChange = (event) => setToDo(event.target.value);
+  const fnSubmit = (event) => {
+    event.preventDefault();
+    if(toDo === "") {
+      return;
+    }
+    setToDos((currentArray) => [toDo, ...currentArray]);
+    setToDo("");
+
+  };
+  
+  /** data check */
+  console.log(toDos);
+
+  /** data check */
 
   return (
     <div>
-      {showing ? <HelloV1 /> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"} </button>
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={fnSubmit}>
+        <input value={toDo} onChange={fnChange} type="text" placeholder="Write your to do" />
+        <button>Add To Do</button>
+      </form>
     </div>
   );
 }
