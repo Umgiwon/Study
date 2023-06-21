@@ -1,35 +1,47 @@
 import { useState, useEffect } from "react";
 
+/*** component */
+/** 주로 사용하는 형태 */
+function HelloV1() {
+  useEffect(() => {
+    console.log("creacted");
+
+    /** clean up function */
+    return () => console.log("destroyed");
+  }, []);
+  return <h1>Hello</h1>;
+}
+
+/** 작게 쪼갠 형태 */
+function HelloV2() {
+
+  function byeFn() {
+    console.log("Bye :(");
+  }
+
+  const hiFn = () => {
+    console.log("Hi :)");
+
+    /** clean up function */
+    return byeFn;
+  }
+
+  useEffect(hiFn, []);
+  return <h1>Hello</h1>;
+}
+
 function App() {
+  
   /** state */
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState("");
+  const [showing, setShowing] = useState(false);
 
   /** event */
-  const onClick = () => setValue((prev) => prev + 1);
-  const onChange = (event) => setKeyword(event.target.value);
-
-  console.log("run all the time");
-
-  /** useEffect는 최초 Render 시 한번만 작동할 수 있도록 처리 */
-  useEffect(() => {
-    console.log("run only once");
-  }, []);
-  useEffect(() => {
-      console.log("run when 'keyword' changes");
-  }, [keyword]);
-  useEffect(() => {
-      console.log("run when 'counter' changes");
-  }, [counter]);
-  useEffect(() => {
-      console.log("run when 'counter || keyword' changes");
-  }, [keyword, counter]);
+  const onClick = () => setShowing(prev => !prev);
 
   return (
     <div>
-      <input value={keyword} onChange={onChange} type="text" placeholder="Search here" />
-      <h1>{counter}</h1>
-      <button onClick={onClick}>clicke</button>
+      {showing ? <HelloV1 /> : null}
+      <button onClick={onClick}>{showing ? "Hide" : "Show"} </button>
     </div>
   );
 }
