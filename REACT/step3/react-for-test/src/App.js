@@ -4,53 +4,85 @@ function App() {
 
     /** state */
     const [loading, setLoading] = useState(true);
-    const [coins, setCoins] = useState([]);
-    // const [money, setMoney] = useState(0);
+    const [movies, setMovies] = useState([]);
 
 
-    /** event */
-    // const onChange = () => {
-    //     setMoney(money);
-    // }
-    // const fnSearch = (event) => {
-    //     console.log(event.target.value);
-    // }
-    // const fnSubmit = () => {
-    //     setMoney(money);
-    // }
-
+    /*** version_1 (fetch - then 사용) 
     useEffect(() => {
-        fetch("https://api.coinpaprika.com/v1/tickers")
+        fetch("https://yts.mx/api/v2/list_movies.json?minimum_rating=8.5&sort_by=year")
         .then(response => response.json())
-        .then((json) => {
-            setCoins(json);
+        .then(json => {
+            setMovies(json.data.movies);
             setLoading(false);
         });
-    }, [])
+    }, []);
+     /*** --------------------------------------- */
+
+
+    /*** version_2 (요새 많이 쓴다 [async & await]) 
+    const getMovies = async () => {
+        const response = await fetch (
+            "https://yts.mx/api/v2/list_movies.json?minimum_rating=8.5&sort_by=year"
+        );
+        const json = await response.json();
+        setMovies(json.data.movies);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        getMovies();
+    }, []);
+    /*** --------------------------------------- */
+
+    /*** version_2.1 (간소화) */
+    const getMovies = async () => {
+        const json = await (
+            await fetch (
+                "https://yts.mx/api/v2/list_movies.json?minimum_rating=8.5&sort_by=year"
+            )
+        ).json();
+        setMovies(json.data.movies);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        getMovies();
+    }, []);
+    /*** --------------------------------------- */
+
+
+    /** data check */
+    // console.log("-------------------------");
+    console.log(movies);
+    // console.log("-------------------------");
+    // console.log("movies : " , movies);
+    // console.log("-------------------------");
+    // console.log("movies : " + movies);
+    // console.log("-------------------------");
 
     return (
         <div>
-            <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
-            {loading ? 
-                <strong>Loading ...</strong> 
-                : 
-                <>
-                {/* <form onSubmit={fnSubmit}> */}
-                    <input /*</input>value={money} onChange={onChange}*/ placeholder="Enter your money($)" type="number"/>
-                    <button /*onClick={fnSearch}*/>Search</button>
-                    <br/><br/>
-                    <select>
-                    {coins.map((coin) => (
-                        <option key={coin.id}>
-                            {coin.name} ({coin.symbol}) : ${coin.quotes.USD.price} USD
-                        </option>
+            {loading ? (
+                <h1>Loading ...</h1> 
+            ) : (
+                <div>
+                    {movies.map((movie) => (
+                        <div key={movie.id}>
+                            <img src={movie.medium_cover_image} />
+                            <h2>{movie.title}</h2>
+                            <p>rating:{movie.rating} year:{movie.year} runtime:{movie.runtime}</p>
+                            <p>{movie.summary}</p>
+                            <ul>
+                                {movie.genres.map((g, index) => (
+                                    <li key={index}>
+                                        {g}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     ))}
-                    </select>
-                {/* </form> */}
-                </>
-            }
-            
-
+                </div>
+            )}
         </div>
     );
 }
