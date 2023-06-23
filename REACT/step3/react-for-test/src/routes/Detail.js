@@ -31,6 +31,7 @@ function Detail() {
                 <h1>Loading...</h1>
             ) : (
                 <div>
+                    <h1>movie img</h1>
                     {/* {movie.map((m) => (
                         <div>
                             <h1>movie img</h1>
