@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 function Detail() {
@@ -11,19 +11,19 @@ function Detail() {
     const [movie, setMovie] = useState([]);
 
     /** async - await */
-    const getMovie = async () => {
+    const getMovie = useCallback(async () => {
         const json = await(
             await fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}`)
         ).json();
         setMovie(json.data.movie);
-        setLoading(false);
-    };
+        setLoading(prev => !prev);
+    },[id]);
     console.log(movie);
     
     
     useEffect(() => {
         getMovie();
-    }, []);
+    }, [getMovie]);
 
     return (
         <div>
@@ -31,12 +31,20 @@ function Detail() {
                 <h1>Loading...</h1>
             ) : (
                 <div>
-                    <h1>movie img</h1>
-                    {/* {movie.map((m) => (
-                        <div>
-                            <h1>movie img</h1>
-                        </div>
-                    ))} */}
+                    <img src={movie.large_cover_image} alt={movie.title}/>
+                    <h2>
+                        {movie.title}
+                    </h2>
+                    <p>rating:{movie.rating} year:{movie.year} runtime:{movie.runtime}</p>
+                    <p>{movie.summary}</p>
+                    <ul>
+                        {movie.genres.map((g, index) => (
+                            <li key={index}>
+                                {g}
+                            </li>
+                        ))}
+                    </ul>
+                    <p>{movie.description_intro}</p>
                 </div>
             )}
         </div>
